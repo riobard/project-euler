@@ -1,18 +1,7 @@
 '''
-This has something to do with factoradic, a factorial-based mixed radix 
+This has something to do with factoradic, a factorial-based mixed radix
 numeral system
-'''
-from euler import permutate as P, factorial as F
 
-'''
-#brutal force, takes a long time
-t   = clock()
-for each in P(range(10)):
-    print each
-print clock() - t
-'''
-
-'''
 clever way by euler:
 
 We know that there are n! permutations for n distinct digits and, as we're
@@ -25,9 +14,10 @@ permutations of the last nine digits, 013456789: 6*8!+1 will take it to
 2701345689. Then we look at the last eight digits, and work out that a further
 6*7!+1 takes it to the string 2780134569 and a total of 997921 permutations...
 
-This method converges quickly. 
-
+This method converges quickly.
 '''
+
+from euler import permutate as P, factorial as F
 
 d   = '0123456789'
 n   = 999999  # 0-based index of 1000000th permutation
