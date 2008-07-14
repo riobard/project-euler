@@ -1,0 +1,6 @@
+names   = open('names.txt').read().replace('"','').split(',')
+names.sort()
+print sum(sum(map(lambda c: ord(c)-64, names[i]))*(i+1) 
+        for i in range(len(names)))
+print sum(sum(ord(c)-64 for c in names[i])*(i+1) 
+        for i in range(len(names)))
