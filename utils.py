@@ -3,6 +3,15 @@ from os import times
 from sys import platform, version_info
 from time import time, sleep
 
+from collections import defaultdict
+
+def groupcount(sq):
+    ''' Accept a sequence, sq, and count its elements by group '''
+    d   = defaultdict(int)
+    for each in sq:
+        d[each] += 1
+    return d
+
 def timex():
     ' Return elapsed (user time, system time, real time) since last call '
     (utime, stime, _, _, _), rtime  = times(), time()

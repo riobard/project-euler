@@ -50,7 +50,7 @@ factorial   = factorial()
 
 
 def product(s):
-    return reduce(lambda x,y:x*y, s)
+    return reduce(lambda x,y:x*y, s, 1)
 
 def ispalindromic(s):
     '''Check if a sequence is palindromic.
@@ -73,15 +73,6 @@ def pythagorean(n):
             if (s == c**2) and (c <= n):
                 yield (a,b,c)
 
-
-def primefactors(n):
-    '''Generate all prime factors of n.'''
-    i   = 2
-    while n > 1:
-        while not (n % i):
-          n     //= i
-          yield i
-        i += 1
 
 @lazylist
 def prime():
@@ -110,6 +101,30 @@ def prime():
             yield n
             primes.append(n)
 prime   = prime()
+
+
+def primefactors(n):
+    '''Generate all prime factors of n.'''
+    for p in prime:
+        if n > 1:
+            while not (n % p):
+                n   //= p
+                yield p
+        else:
+            break
+
+from utils import groupcount
+def uniprimefact(n):
+    ''' Return the Unique Prime-Factorization representation of n 
+    
+    let n = (a**x) * (b**y) * (c**z) * ...
+    return {a: x, b: y, c: z, ...}
+    '''
+
+    return groupcount(primefactors(n))
+
+
+
 
 def primesieve(n):
     '''Sieve of Eratosthenes
