@@ -8,28 +8,14 @@ and then find the maximum power of each prime element.
 1*(2**4)*(3**2)*5*7*11*13*17*19
 '''
 
-from euler import primefactors, product
-from lazy import compact
+from euler import uniprimefact, product
 
-frequent    = {}
-for i in range(1,21):
-    for (primefactor,cnt) in compact(primefactors(i)):
-        if primefactor in frequent:
-            if frequent[primefactor] < cnt:
-                frequent[primefactor]   = cnt
-        else:
-            frequent[primefactor]   = cnt
+nums    = range(1, 20)
 
-print product(primefactor**cnt for (primefactor, cnt) in frequent.items())
+d   = {}
+for i in nums:
+    for (prime, power) in uniprimefact(i).items():
+        if (prime in d and d[prime] < power) or (prime not in d):
+            d[prime]    = power 
 
-
-# I don't know why the following works, but it's FAST!
-# I guess the following code must be a watered-down version of the above
-k = 1
-for i in range(1, 21):
-    if k % i:
-        for j in range(1, 21):
-            if not ((k*j) % i):
-                k *= j
-                break
-print k
+print product(prime**power for (prime, power) in d.items())

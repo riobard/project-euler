@@ -107,7 +107,7 @@ def primefactors(n):
     '''Generate all prime factors of n.'''
     for p in prime:
         if n > 1:
-            while not (n % p):
+            while not (n % p):  # n can be evenly divided by prime p
                 n   //= p
                 yield p
         else:
@@ -300,7 +300,7 @@ def dijkstra(g, s, d):
 
 
 def prim(g):
-    '''Prim's Minimum Spanning Tree Algorithm. 
+    '''Prim's Minimum Spanning Tree Algorithm.
 
     g: a graph as a dict of {node: {neighbor: weight, ...}, ...}
 
