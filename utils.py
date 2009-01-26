@@ -7,10 +7,10 @@ from collections import defaultdict
 
 def groupcount(sq):
     ''' Accept a sequence, sq, and count its elements by group '''
-    d   = defaultdict(int)
+    d   = defaultdict(int)  # default 0
     for each in sq:
         d[each] += 1
-    return d
+    return dict(d)
 
 def timex():
     ' Return elapsed (user time, system time, real time) since last call '

@@ -82,8 +82,9 @@ def prime():
         '''Generate 6n-1, 6n+1 sequence. '''
         n   = 1
         while True:
-            yield 6*n-1
-            yield 6*n+1
+            hex = 6*n
+            yield hex-1
+            yield hex+1
             n   += 1
 
     def isprime(n):
@@ -129,7 +130,7 @@ def uniprimefact(n):
 def primesieve(n):
     '''Sieve of Eratosthenes
 
-    Return a list of all primes under n
+    Return a list of all primes less than n
     '''
     l   = range(n)
     l[1]= 0
@@ -159,6 +160,7 @@ def properdivisors(n):
             if i != k:
                 yield k
 
+
 def circulars(s):
     '''Generate circulars of sequence s
 
@@ -173,7 +175,7 @@ def dec2bin(n):
     while n:
         s   = str(n%2) + s
         n >>= 1
-    return s
+    return s if s!='' else '0'
 
 def permutate(s):
     '''Recursively generate all permutations of set s
@@ -190,6 +192,60 @@ def permutate(s):
     else:
         yield []
 
+def combinate(s, k):
+    ''' Return k-combination from list s '''
+    n   = len(s)
+    #print 'k=%d, n=%d' % (k, n)
+    if n == 0 or k == 0 or k > n:
+        yield []
+    else:
+        assert 1 <= k <= n
+
+        if k == 1:
+            for each in s:
+                yield [each]
+        else:
+            for i in range(n):
+                each, others    = s[i], s[i+1:]
+                for other in combinate(others, k-1):
+                    if other != []:
+                        yield [each] + other
+
+
+def divisors(n):
+    
+    def decompose(n):
+        for (prime, power) in uniprimefact(n).items():
+            ls  = []
+            for i in range(power+1):
+                ls.append(prime**i)
+            yield ls
+
+    def vectorproduct(s1, s2):
+        for e1 in s1:
+            for e2 in s2:
+                yield e1*e2
+
+    def vectorloop(s):
+        ts  = [1]
+        for each in s:
+            ts  = vectorproduct(ts, each)
+        return ts
+
+    def fnchain(a, fs):
+        for f in fs:
+            a  = f(a)
+        return a
+
+    return fnchain(n, [decompose, vectorloop, sorted])
+    # == return sorted(vectorloop(decompose(n)))
+
+def properdivisors2(n):
+    # this is significantly slower than the previous method
+    assert n > 1
+    return divisors(n)[:-1]
+
+
 def permutation(n, k):
     '''Number of permutations of k elements out of n elements.'''
     return factorial(n) // factorial(n - k)
@@ -197,6 +253,7 @@ def permutation(n, k):
 def combination(n, k):
     '''Number of combinations of k elements out of n elements.'''
     return factorial(n) // (factorial(k) * factorial(n-k))
+
 
 from itertools import imap, izip
 def isarithmetic(s):
@@ -231,14 +288,14 @@ def gcd(a, b):
     while b:
         a,  b   = b, a % b
     return a
-
 hcf = gcd   # gcd also known as Highest Common Factor
 
 def lcm(a, b):
     '''Return the Least Common Multiple of a and b'''
-    return a/gcd(a, b)*b    # (a*b)/gcd(a,b) => a/gcd(a,b)*b faster
+    return a/gcd(a, b)*b    # (a*b)/gcd(a,b) => a/gcd(a,b)*b faster for big a,b
 
 def ispandigital(n):
+    '''Pandigital numbers contain all digits from 0 to 9'''
     return set(str(n)) == set('0123456789')
 
 
