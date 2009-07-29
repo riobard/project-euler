@@ -125,7 +125,7 @@ def uniprimefact(n):
     return groupcount(primefactors(n))
 
 
-
+from math import sqrt
 
 def primesieve(n):
     '''Sieve of Eratosthenes
@@ -134,17 +134,18 @@ def primesieve(n):
     '''
     l   = range(n)
     l[1]= 0
-    for i in range(2, n):
+    for i in range(2, int(sqrt(n)) + 1):
         if l[i]:
-            for j in range(i**2, n, i):
-                l[j] = 0
+            l[i**2::i]  = [0] * ((n - 1 - i**2)//i + 1)
 
     return [x for x in l if x]
+
 
 def isprime(x):
     if x<5: return x==2 or x==3
     return x%2 and x%3 and all(x%(6*k-1) and x%(6*k+1)
             for k in range(1, int((x**.5 + 1)/6)+1))
+
 
 def properdivisors(n):
     '''Generate a list of proper divisors of n
