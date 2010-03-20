@@ -1,7 +1,12 @@
-cnt = 0
-l   = 21
-cx = cy = 0
+from euler import memoized
 
-for x in range(l):
-    for y in range(l):
+# note there is a simple formula. read Pascal's triangle for more
 
+@memoized
+def a(x, y):
+    if (x==0 or y==0):
+        return 1
+    else:
+        return a(x-1, y) + a(x, y-1)
+
+print a(20, 20)

@@ -24,7 +24,7 @@ def timex():
             utime2, stime2    = stime2, utime2
         dutime, dstime, drtime  = utime2 - utime, stime2 - stime, rtime2 - rtime
         rs  = (dutime, dstime, drtime)
-        print '%.2fu %.2fs %.2fr' % rs
+        print '%.4fu %.4fs %.4fr' % rs
         yield rs
         utime, stime, rtime = utime2, stime2, rtime2
 timex   = timex().next
