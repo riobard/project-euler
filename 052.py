@@ -13,12 +13,10 @@ For this problem I didn't even use a computer. I just remembered that the repeat
 but
 7 * 142857 = 999999 
 '''
-from utils import timex
-timex()
+
 i   = 0
 while True:
     i   += 1
     if set(str(i))==set(str(2*i))==set(str(3*i))==set(str(4*i))==set(str(5*i))==set(str(6*i)):
         print i
         break
-timex()

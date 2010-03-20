@@ -43,7 +43,4 @@ def f(i, j, ii, jj=None):
         else:
             return v + min(f(i+1, j, i), f(i-1, j, i), f(i, j+1, i))
 
-from utils import timex
-timex()
 print min(f(i, 0, i) for i in range(M+1))
-timex()

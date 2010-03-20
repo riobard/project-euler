@@ -1,2 +1,0 @@
-from euler import prime
-

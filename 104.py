@@ -65,8 +65,6 @@ F(n) = n               # n <= 1
 F(n) = F(n-1) + F(n-2) # n >  1
 '''
 
-from utils import timex
-timex()
 a, b, k    = 0, 1, 0
 d   = set('123456789')
 while 1:
@@ -78,4 +76,3 @@ while 1:
     k       += 1
     if not (k % 1000):
         print k
-timex()

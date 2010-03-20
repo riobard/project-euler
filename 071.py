@@ -1,5 +1,5 @@
 from __future__ import division
-from utils import timex
+
 
 '''
 calculating the number to the left of 3/7 in each successive sequence ... 
@@ -68,7 +68,6 @@ the following code works this way:
 
 from euler import hcf
 
-timex()
 
 ds  = [(int(d*3/7), d) for d in range(1,10**6+1)]
 ds.sort(key=lambda x: -x[0]/x[1])
@@ -78,8 +77,6 @@ for n,d in ds:
     if hcf(n,d) == 1:
         print '%d/%d = %10.10f' % (n, d, n/d)
         break
-
-timex()
 
 exit()
 
@@ -114,7 +111,7 @@ Procedures:
 
 exit()  # this following code is fast to find the first two but slow to finish
 
-timex()
+
 p   = (0, 0, 0)
 l   = 3/7
 for d in range(10**6, 0, -1):
@@ -125,5 +122,3 @@ for d in range(10**6, 0, -1):
                 p   = k
                 print '%d/%d = %10.10f' % (p[1], p[2], p[0])
             break
-
-timex()

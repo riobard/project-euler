@@ -39,9 +39,7 @@ N   = len(M)
 g   = buildgraph(M)
 g[(-1,-1)]  = {(0,0):M[0][0]}   # source outside the matrix
 
-from utils import timex
 from euler import dijkstra
-timex()
+
 path  = dijkstra(g, (-1,-1), (N-1, N-1))
 print pathcost(path, g)
-timex()

@@ -19,16 +19,12 @@ check is 7*9! = 2540160.
 '''
 
 from euler import factorial as f
-from utils import timex
 
 def factorion():
     for i in range(7*f[9]):
         if i == sum(f[x] for x in map(int, str(i))):
             yield i
 
-timex()
 factorions  = list(factorion())
 print factorions
 print sum(factorions) - 1 - 2
-
-timex()

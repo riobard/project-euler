@@ -14,9 +14,7 @@ def triple(ls):
                 yield [ls[i], ls[j], ls[k]]
 
 from euler import primesieve, isarithmetic
-from utils import timex
 
-timex()
 s   = set(primesieve(10000)) - set(primesieve(1000))
 d   = {}
 for each in sorted(s):
@@ -31,4 +29,3 @@ for digits in sorted(d):
         for each in triple(d[digits]):
             if isarithmetic(each):
                 print each
-timex()

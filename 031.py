@@ -26,7 +26,4 @@ def f(n, us):
             for i in range(n//u, -1, -1) for j in f(n - i*u, us)]
 
 
-from utils import timex
-timex()
 print len(f(200, [200,100,50,20,10,5,2,1]))
-timex()

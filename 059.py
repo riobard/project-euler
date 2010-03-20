@@ -1,7 +1,5 @@
 from __future__ import division
 from itertools import cycle
-from utils import timex
-timex()
 
 msg     = map(int, open('cipher1.txt').read().split(','))
 cyc     = len(msg) // 3 + 1
@@ -21,4 +19,3 @@ decrypted   = [m ^ k for m, k in zip(msg, cycle(key))]
 print ''.join(map(chr, decrypted))
 print sum(decrypted)
 
-timex()

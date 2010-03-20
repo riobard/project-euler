@@ -1,7 +1,6 @@
 from __future__ import division
 from euler import isprime
 from itertools import izip
-from utils import timex
 
 
 # helper functions
@@ -86,6 +85,4 @@ def f(ratio):
         if isprime(each):           nprime += 1
         if nprime/ntotal < ratio:   return int(each**.5)
 
-timex()
 print f(.1)
-timex()

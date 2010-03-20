@@ -1,5 +1,4 @@
 from euler import ispalindromic, dec2bin
-from utils import timex
 
 # this is slow (taking about 10 sec. to compute)
 #print sum(i for i in range(10**6) if ispalindromic(str(i)) and
@@ -55,10 +54,8 @@ def palindromicnumbers():
                 for c in range(10)])
 
 # This is much more efficient
-timex()
 print sum(i for i in palindromicnumbers()
         if i%2 and ispalindromic(dec2bin(i)))
-timex()
 
 # now I'm going to write it like crazy Lisp-ist ...
 
@@ -71,15 +68,12 @@ def palindromic(n):
         [[(t,) for t in range(1,10)]] + [range(10)]*(sum(divmod(n,2))-1))))
 
 
-timex()
 print sum(each for each in reduce(lambda x,y: x+y,
     (palindromic(i) for i in range(1,7)))
     if each % 2 and ispalindromic(dec2bin(each)))
-timex()
 
 # eventually evolves into a one-liner ...
 
-timex()
 print sum(each for each in reduce(lambda x,y: x+y,  
     # this lambda for concatenating lists of palindromic numbers
 
@@ -103,4 +97,3 @@ print sum(each for each in reduce(lambda x,y: x+y,
     )(i) for i in range(1,7))) if each % 2 and ispalindromic(dec2bin(each)))
     # range(1,7) to produce palindromic numbers containing 1~6 digits
     # also check if the palindromic number is odd to speed up a little bit
-timex()

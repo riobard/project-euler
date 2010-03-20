@@ -1,7 +1,5 @@
-from utils import timex
 from collections import defaultdict
 
-timex()
 d   = defaultdict(int)  # d[key] default to 0 when first accessed
 for a in range(1,500):
     for b in range(a,500):
@@ -13,4 +11,3 @@ for a in range(1,500):
                 d[p]    += 1
 
 print max((d[k],k) for k in d)
-timex()

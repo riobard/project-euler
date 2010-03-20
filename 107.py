@@ -25,9 +25,5 @@ total   = sum(sum(each for each in line if each is not None)
 g   = buildgraph(m)
 from euler import prim
 
-from utils import timex
-
-timex()
 mst = prim(g)
 print total - sum(mst.values())
-timex()

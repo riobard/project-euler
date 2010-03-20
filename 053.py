@@ -22,8 +22,7 @@ save the time needed to check all numbers in a given row.
 '''
 
 from euler import combination as C
-from utils import timex
-timex()
+
 total   = 0
 for i in range(0,101):
     for j in range(i+1):
@@ -31,4 +30,3 @@ for i in range(0,101):
             total   += i-j-j+1
             break
 print total
-timex()

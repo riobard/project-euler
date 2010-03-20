@@ -6,8 +6,7 @@ so check from 7-digit pandigitals
 '''
 
 from euler import isprime, permutate
-from utils import timex
-timex()
+
 digits  = range(7,0,-1)
 for d in digits:
     for p in permutate(range(d,0,-1)):  # permutate in desc order
@@ -16,4 +15,3 @@ for d in digits:
         if isprime(n):
             print n
             break
-timex()

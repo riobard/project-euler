@@ -1,6 +1,4 @@
-from utils import timex
 from euler import primesieve
-timex()
 
 '''
 f(n)    = n*n + a*n + b
@@ -41,5 +39,3 @@ als = [a for a in range(-999, 1000) for b in prime1k
 
 rs  = max((mostprimes(a,b), a, b) for a in als for b in prime1k)
 print rs[1]*rs[2]
-
-timex()

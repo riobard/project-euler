@@ -18,7 +18,6 @@ Further speedup:
     This will reduce to 5 * 2 * 44 * 5! = 52800 operations. 
 '''
 
-from utils import timex
 from euler import permutate, permutation as P
 
 def unique(s):
@@ -59,6 +58,4 @@ def f():
                    n[5]*10**4 + n[4]*10**5 + n[3]*10**6 + 
                    n[2]*10**7 + n[1]*10**8 + n[0]*10**9)
 
-timex()
 print sum(list(f()))
-timex()

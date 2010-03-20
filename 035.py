@@ -1,5 +1,4 @@
 from euler import primesieve
-from utils import timex
 
 def circular(n):
     '''
@@ -24,7 +23,5 @@ def f(n):
 def iscircularprime(n):
     return all(each in primes for each in circular(n))
 
-timex()
 primes  = [x for x in primesieve(10**6) if f(x)]
 print sum(iscircularprime(x)  for x in primes)
-timex()

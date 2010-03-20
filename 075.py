@@ -1,5 +1,3 @@
-from utils import timex
-timex()
 n   = 10000//3
 d   = {}
 for a in range(1,n+1):
@@ -16,4 +14,3 @@ for a in range(1,n+1):
                 d[l]  = 1
 
 print sum(d[k] == 1 for k in d)
-timex()

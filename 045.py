@@ -1,5 +1,4 @@
 from __future__ import division
-from utils import timex
 
 def tri(n):
     return n*(n+1)/2
@@ -18,7 +17,6 @@ def ispen(n):
 def hex(n):
     return n*(2*n-1)
 
-timex()
 i   = 143
 while 1:
     i   += 1
@@ -26,4 +24,3 @@ while 1:
     if istri(h) and ispen(h):   # in fact all Hex numbers are Tri numbers
         print h
         break
-timex()

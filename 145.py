@@ -32,7 +32,7 @@ for i in range(100000,1000000,12):
 '''
 
 '''
-A goold explanation:
+A good explanation by unknonw commenter:
 
 I used only pencil and paper this time, and I must admit that this problem is
 very interesting.
