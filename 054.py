@@ -1,141 +1,124 @@
-order   = '23456789TJQKA'   # Positions of the string are used to sort cards
+'''
+
+bit representation of a card
+
+rrrr shdc 
+
+0-3 shdc: suit of the card (Spade, Heart, Diamond, Club)
+4-7 rrrr: rank of the card (0-12: "23456789TJQKA")
+
+'''
+
+
+RANK    = "23456789TJQKA"
+SUIT    = "CDHS"
+CARDMAP = dict((RANK[rank] + SUIT[suit], (rank<<4)|(1<<suit))
+            for rank in range(len(RANK)) for suit in range(len(SUIT)))
+
+
+# Rank of a hand of 5 cards
+HIGHCARD        = 0
+ONEPAIR         = 1
+TWOPAIRS        = 2
+THREEOFAKIND    = 3
+STRAIGHT        = 4
+FLUSH           = 5
+FULLHOUSE       = 6
+FOUROFAKIND     = 7
+STRAIGHTFLUSH   = 8
+ROYALFLUSH      = 9
+
 
 def rank(hand):
-    '''
-    Given a hand (5 cards), return rank in the form of a list [r, v1, v2, ...].
-    r is the rank of the hand, as follows:
-        0: High Card
-        1: One Pair
-        2: Two Pairs
-        3: Three of a Kind
-        4: Straight
-        5: Flush
-        6: Full House
-        7: Four of a Kind
-        8: Straight Flush
-        9: Royal Flush
+    c1, c2, c3, c4, c5  = hand
+    r1, r2, r3, r4, r5  = sorted((card>>4 for card in hand), reverse=True)
 
-    v1, v2, ... are the values of the most significant cards. 
+    # is the hand a flush?
+    isflush     = c1 & c2 & c3 & c4 & c5 & 0b1111
+
+    # is the hand a straight? ABCDE
+    isstraight  = (r1-r2==r2-r3==r3-r4==r4-r5==1)
+
+    if isflush and isstraight:
+        if r1==11:
+            return [ ROYALFLUSH ]
+        else:
+            return [ STRAIGHTFLUSH, r1 ]
+
+    if isflush:
+        return [ FLUSH, r1, r2, r3, r4, r5 ]
     
-    Examples 
-        5H 5C 6S 7S KD  is in the form of One Pair, so r = 1. 
-        Then the most significant card is 5H, since it is part of the pair. 
-        Followed by KD 7S 6S, in decreasing orders. 
-        The rank of this hand would be [1, 3, 11, 5, 4]. This list is used to
-        compare two hands of cards. 
+    if isstraight:
+        return [ STRAIGHT, r1 ]
 
-        Another hand 2C 3S 8S 8D TD, will have the rank of [1, 6, 8, 1, 0]. 
-        
-        Python compares lists by comparing each element from left to right. 
-        Thus [1, 3, 11, 5, 4] < [1, 6, 8, 1, 0] becasue although the first 
-        elements equal in both list, the second elements 3 < 6. 
-    '''
 
-    hand.sort(key=lambda card: -order.index(card[0]))    # sort: desc
-    rank    = [False] * 10
-    high    = [[]] * 10
+    # is the hand four of a kind? AAAAB or ABBBB
+    is4ofakind  = (r2 == r3 == r4) and (r1==r2 or r4==r5)
+    if is4ofakind:
+        if r1==r2:  # AAAAB
+            return [ FOUROFAKIND, r1, r5 ]
+        else:   # ABBBB
+            return [ FOUROFAKIND, r5, r1 ]
 
-    # Flush: All cards of the same suit
-    rank[5] = all(hand[0][1] == hand[i][1] for i in range(1,5))
-    # Significant cards:
-    #   Each card from highest value to lowest
-    high[5] = [order.index(hand[i][0]) for i in range(5)]
+    # is the hand full house? AAABB or AABBB
+    isfullhouse = (r1==r2==r3 and r4==r5) or (r1==r2 and r3==r4==r5)
+    if isfullhouse:
+        if r2==r3:  # AAABB
+            return [ FULLHOUSE, r1, r5 ]
+        else:  # AABBB
+            return [ FULLHOUSE, r5, r1 ]
 
-    # Straight: All cards are consecutive values
-    # Value of 1st card - value of i-th card = i (i is 0-based index)
-    rank[4] = all((order.index(hand[0][0]) - order.index(hand[i][0])) == i
-                  for i in range(1,5))
-    # Significant cards:
-    #   The first card. All others are consecutive so no need to check
-    high[4] = [order.index(hand[0][0])]
 
-    # Straight Flush: All cards are consecutive values of same suit 
-    rank[8] = rank[4] and rank[5]
-    # Significant cards: 
-    #   The first card. All others are consecutive so no need to check
-    high[8] = [order.index(hand[0][0])]
+    # is the hand three of a kind? AAABC, ABBBC, ABCCC
+    is3ofakind  = (r1==r2==r3) or (r2==r3==r4) or (r3==r4==r5)
+    if is3ofakind:
+        if r2==r3:
+            if r3!=r4:   # AAABC
+                return [ THREEOFAKIND, r1, r4, r5 ]
+            else:   # ABBBC
+                return [ THREEOFAKIND, r2, r1, r5 ]
+        else:   # ABCCC
+            return [ THREEOFAKIND, r5, r1, r2 ]
 
-    # Royal Flush: Ten, Jack, Queen, King, Ace in same suit
-    # Straight Flush beginning with A: AKQJT
-    rank[9] = rank[8] and (high[8] == 'A')
-    # Sigificant cards: 
-    #   None, since all royal flushes tie with each other
-    high[9] = []
 
-    # Four of a Kind: Four cards of the same value
-    # Either AAAAB or ABBBB if sorted
-    rank[7] = all(hand[0][0] == hand[i][0] for i in range(1,4)) or \
-                  all(hand[1][0] == hand[i][0] for i in range(2,5))
-    # Significant cards: 
-    #   1. The midddle card, which is one of the Four of a Kind
-    #   2. The card which is not one of the Four of a Kind
-    high[7] = [order.index(hand[2][0]),
-               order.index(hand[4][0]) if hand[0][0] == hand[2][0] else
-               order.index(hand[0][0])]
+    # is the hand two pairs? AABBC, AABCC, ABBCC
+    is2pairs    = (r1==r2 and r3==r4) or (r1==r2 and r4==r5) or (r2==r3 and r4==r5)
+    if is2pairs:
+        if r1==r2:
+            if r3==r4:  # AABBC
+                return [ TWOPAIRS, r1, r3, r5 ]
+            else: # AABCC
+                return [ TWOPAIRS, r1, r5, r3 ]
+        else:   # ABBCC
+            return [TWOPAIRS, r2, r5, r1 ]
 
-    # Full House: Three of a kind and a pair
-    # AAABB or AABBB
-    rank[6] = (all(hand[0][0] == hand[i][0] for i in range(1,3)) and
-               (hand[3][0] == hand[4][0])) or ((hand[0][0] == hand[1][0])
-                and all(hand[2][0] == hand[i][0] for i in range(3,5)))
-    # Significant cards:
-    #   1. The middle card, which is one of the Three of a Kind
-    #   2. The card of the pair
-    high[6] = [order.index(hand[2][0]),
-               order.index(hand[4][0]) if hand[0][0] == hand[2][0] else
-               order.index(hand[0][0])]
 
-    # Three of a Kind: Three cards of the same value
-    # AAABC or ABBBC or ABCCC
-    rank[3] = (hand[0][0] == hand[1][0] == hand[2][0]) or \
-              (hand[1][0] == hand[2][0] == hand[3][0]) or \
-              (hand[2][0] == hand[3][0] == hand[4][0])
-    # Significant cards:
-    #   1. The middle card, which is one of the Three of a Kind
-    #   2. Other cards, from highest to lowest
-    high[3] = [order.index(hand[2][0])] + [order.index(card[0])
-               for card in hand if card[0] != hand[2][0]]
+    # is the hand one pair? AABCD, ABBCD, ABCCD, ABCDD
+    is1pair = (r1==r2) or (r2==r3) or (r3==r4) or (r4==r5)
+    if is1pair:
+        if r1==r2:  # AABCD
+            return [ ONEPAIR, r1, r3, r4, r5 ]
+        elif r2==r3: # ABBCD
+            return [ ONEPAIR, r2, r1, r4, r5 ]
+        elif r3==r4: # ABCCD
+            return [ ONEPAIR, r3, r1, r2, r5 ]
+        else:
+            return [ ONEPAIR, r5, r1, r2, r3 ]
 
-    # Two Pairs: Two different pairs
-    # AABBC or AABCC or ABBCC
-    rank[2] = ((hand[0][0] == hand[1][0]) and ((hand[2][0] == hand[3][0]) or 
-               (hand[3][0] == hand[4][0]))) or ((hand[1][0] == hand[2][0]) and
-               (hand[3][0] == hand[4][0]))
-    # Significant cards:
-    #   1. The higher pairs
-    #   2. The lower pairs
-    #   3. The remaining one card
-    face    = [card[0] for card in hand]
-    for each in face:
-        if face.count(each) == 1:   # find the solo card
-            face.remove(each)       # remove the solo
-            break                   # leaving the two pairs, ordered
-    high[2] = map(order.index, [face[0], face[2], each])
+    # else the hand must be a high card
+    ishighcard  = True
+    if ishighcard:
+        return [ HIGHCARD, r1, r2, r3, r4, r5 ]
 
-    # One Pair: Two cards of the same value
-    # AABCD or ABBCD or ABCCD or ABCDD
-    rank[1] = (hand[0][0] == hand[1][0]) or (hand[1][0] == hand[2][0]) or \
-              (hand[2][0] == hand[3][0]) or (hand[3][0] == hand[4][0])
-    # Significant cards:
-    #   1. The pairs
-    #   2. The remaining cards
-    face    = [card[0] for card in hand]    # first get a list of face values
-    for each in face:
-        if face.count(each) == 2:                       # find the pair
-            face    = [v for v in face if v != each]    # remove the pair
-            break
-    high[1] = [order.index(each)] + [order.index(v) for v in face]
 
-    # High Card: Highest value card
-    # True if all previous conditions are false
-    rank[0] = all(not each for each in rank[1:])
-    # Significant cards:
-    #   All, from highest to lowest
-    high[0] = [order.index(card[0]) for card in hand]
 
-    r   = max(i for i in range(10) if rank[i])  # find the highest rank
-    return [r] + high[r]    # return the rank list
+def p1win(hand_str):
+    ''' if p1 wins '''
+    hand    = [CARDMAP[card] for card in hand_str.strip().split(' ')]
+    p1, p2  = hand[:5], hand[5:]
 
-print sum(rank(h1) > rank(h2) for (h1, h2) in 
-          map(lambda cards: (cards[:5], cards[5:]), [line.split() 
-          for line in open('poker.txt').read().strip().split('\n')]))
+    return rank(p1) > rank(p2)
+
+
+from sys import argv
+print sum(p1win(line) for line in open(argv[1]))
