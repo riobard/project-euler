@@ -94,13 +94,13 @@ def prime():
 
     yield 2
     yield 3
-    primes  = [3]   # hexstep generates odd numbers, so 2 is unneccessary
+    primes  = set([3])   # hexstep generates odd numbers, so 2 is unneccessary
                     # this list is interal cache of calcuated primes
 
     for n in hexstep():    # all primes (except 2 and 3) are 6n-1 or 6n+1
         if isprime(n):
             yield n
-            primes.append(n)
+            primes.add(n)
 prime   = prime()
 
 
