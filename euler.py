@@ -463,10 +463,10 @@ def partition(n):
         while True:
             k   += 1
             sign= -1 if k%2==0 else 1
-            f1  = pentagonal(k)
-            f2  = pentagonal(-k)
-            s   += sign * (partition(n-f1) + partition(n-f2))
-            if n-f1 <= 0 or n-f2 <= 0:
+            m1  = n - pentagonal(k)
+            m2  = n - pentagonal(-k)
+            s   += sign * (partition(m1) + partition(m2))
+            if m1 <= 0 or m2 <= 0:
                 break
 
     return s
