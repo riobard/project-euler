@@ -424,3 +424,51 @@ def prim(g):
             break
 
     return dict((pair, cost) for (cost,pair) in mst)    # set -> dict
+
+
+
+
+
+def pentagonal(n):
+    'Pentagonal number'
+    return n*(3*n-1)/2
+
+
+
+@memoized
+def partition(n):
+    '''
+    # of ways to partition integer n
+    
+    Find the # of ways to partition a number
+
+    http://www.math.temple.edu/~melkamu/html/partition.pdf
+
+    p(<0) = 0 
+    p(0) = 1
+    p(n) = p(n-1) + p(n-2) - p(n-5) - p(n-7) + p(n-12) + p(n-15) - p(n-22) - p(n-26) + ...
+
+    # of ways to partition n 
+    p(n) = \sum_{k=1}^{\infinity} (-1)^(k+1) * { p(n-f(k)) + p(n-f(-k)) }
+
+    '''
+
+    if n < 0: 
+        s   = 0
+    elif n == 0:
+        s   = 1
+    else:
+        s   = 0
+        k   = 0
+        while True:
+            k   += 1
+            sign= -1 if k%2==0 else 1
+            f1  = pentagonal(k)
+            f2  = pentagonal(-k)
+            s   += sign * (partition(n-f1) + partition(n-f2))
+            if n-f1 <= 0 or n-f2 <= 0:
+                break
+
+    return s
+
+
