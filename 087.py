@@ -19,5 +19,10 @@ def run():
                 if a2 + b3 + c4 > MAX: break
                 s.add(a2+b3+c4)     # remove duplicates in a set
 
+    return len(s)
 
-assert 1097343 == len(s)
+
+rs  = run()
+print rs
+assert 1097343 == rs
+
