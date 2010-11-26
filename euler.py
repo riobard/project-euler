@@ -104,7 +104,6 @@ def prime():
 prime   = prime()
 
 
-
 def upf(n):
     'Unique prime factors of n'
     pf  = set()
