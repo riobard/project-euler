@@ -189,16 +189,12 @@ def properdivisors(n):
     check until n**.5. 
     '''
     yield 1
-    #for i in range(2, int(n**.5)+1):   # this will eat all memory when n is large
-    i = 2
-    while i <= n**.5:
+    for i in xrange(2, int(n**.5)+1):
         if n % i == 0:
             yield i
             k   = n // i
             if i != k:
                 yield k
-
-        i += 1
 
 
 def circulars(s):
