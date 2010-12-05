@@ -124,13 +124,12 @@ def upf(n):
 
 def primefactors(n):
     '''Generate all prime factors of n.'''
-    if not n%2: 
-        yield 2
-    while not n%2: 
+    while 0==n%2: 
         n//=2
+        yield 2
     t=3
     while t**2<=n:
-        while not n%t:
+        while 0==n%t:
             yield t
             n//=t
         t+=1
@@ -158,6 +157,12 @@ def uniprimefact(n):
     '''
 
     return groupcount(primefactors(n))
+
+
+
+def totient(n):
+    ''' Euler's totient function: # of coprimes of n in [1, n) '''
+    return product((p-1)*(p**(k-1)) for (p, k) in uniprimefact(n).items())
 
 
 from math import sqrt
