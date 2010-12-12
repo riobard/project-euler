@@ -16,6 +16,8 @@ The first ten terms in the sequence of convergents for e are:
 (h_n/k_n) = 2/1, 3/1, 8/3, 11/4, 19/7, 87/32, 106/39, 193/71, 1264/465, 1457/536
 
 
+Related to P064, P066
+
 '''
 
 from lazy import lazylist
