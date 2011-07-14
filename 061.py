@@ -27,7 +27,6 @@ p6s = tuple(take4digit(p6))
 p7s = tuple(take4digit(p7))
 p8s = tuple(take4digit(p8))
 
-    
 
 def find(pa, pb, pc, pd, pe, pf):
     for a in pa:
