@@ -104,37 +104,22 @@ def prime():
 prime   = prime()
 
 
-def upf(n):
-    'Unique prime factors of n'
-    pf  = set()
-    if not n%2: 
-        pf.add(2)
-    while not n%2: 
-        n   //= 2
-    t=3
-    while t**2<=n:
-        while not n%t:
-            pf.add(t)
-            n   //= t
-        t+=1
-    if n > 1: 
-        pf.add(n)
-    return pf
-
 
 def primefactors(n):
     '''Generate all prime factors of n.'''
-    while 0==n%2: 
-        n//=2
-        yield 2
-    t=3
-    while t**2<=n:
-        while 0==n%t:
-            yield t
-            n//=t
-        t+=1
+    f = 2
+    while f * f <= n:
+        while not n % f:
+            yield f
+            n //= f
+        f += 1
     if n > 1:
         yield n
+
+
+def upf(n):
+    'Unique prime factors of n'
+    return set(primefactors(n))
 
 
 
@@ -147,6 +132,7 @@ def primefactors_slow(n):
                 yield p
         else:
             break
+
 
 from utils import groupcount
 def uniprimefact(n):
